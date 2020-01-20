@@ -1,0 +1,203 @@
+openapi: 3.0.0
+info:
+  description: "This is a Resource Bridge API, used by Resource Bridge App."
+  version: "1.0.0"
+  title: "Resource Bridge"
+  contact:
+    email: "mateusz.jenek@gmail.com"
+
+servers:
+  - url: "https://localhost:2000/mbridge/v1"
+    description: "Test / Demonstration server"
+  - url: "https://89.132.231.69:2000/mbridge/v1"
+    description: "Main server for DCG Poland organization"
+    
+tags:
+- name: "users"
+  description: "Access to registered users information"
+- name: "systems"
+  description: "Access to systems collection"
+- name: "reservations"
+  description: "Access to reservations collection"
+- name: "projects"
+  description: "Access to projects collection"
+
+paths:
+  /auth/token:
+    post:
+      tags: ["users"]
+      summary: "Get authentication token"
+      requestBody:
+        required: true
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+      responses:
+        200:
+          description: "Successfuly authenticated user"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        401:
+          description: "Unauthorized access, given credentials are invalid"
+  /users:
+    post:
+      tags: ["users"]
+      summary: "Register new user"
+      description: "To register **regular** user you need at least admin privileges. </br> To register **admin** user you need at least admin privileges. </br> To register **root** user you need root user privileges </br> Instruction and credentials for new user will be send to given in request email"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+      responses:
+        204: 
+          description: "Successfully registered new user"
+        401:
+          description: "Unauthorized access, this endpoint requires valid JWT with admin or root privilages"
+        409:
+          description: "Given user already exists"
+          
+  /systems:
+    get:
+      tags: ["systems"]
+      summary: "Get collection of systems avaliable to user"
+      parameters: 
+        - in: query
+          name: "filter"
+          schema:
+            type: string
+            enum: ["Simulator", "Hardware"]
+      responses:
+        200:
+          description: "An array object contains avaliable for user systems"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/systemsCollection'
+        401:
+          description: "Unauthorized access, this endpoint requires valid JWT"
+    post:
+      tags: 
+        - "systems"
+      summary: "Add new system to user systems collection"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/system'
+      responses:
+        200:
+          description: "Successfully added system"
+        401:
+          description: "Unauthorized access, this endpoint requires valid JWT"
+  /systems/{id}:
+    get:
+      tags: ["systems"]
+      summary: "Get system single system from collection"
+      parameters: 
+        - in: path
+          required: true
+          name: "id"
+          description: "ID of system in systems collection"
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "A single object represent system with given ID from system repository"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/system'
+        404:
+          description: "System does not exist in user systems collecion"
+        401:
+          description: "Unauthorized access, this endpoint requires valid JWT"
+    patch:
+      tags: ["systems"]
+      summary: "Update system information"
+      parameters: 
+        - in: path
+          required: true
+          name: "id"
+          description: "ID of system in systems collection"
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/system'
+      responses:
+        200:
+          description: "Successfully updated system information"
+        404:
+          description: "System does not exist in user systems collecion"
+        401:
+          description: "Unauthorized access, this endpoint requires valid JWT"
+    delete:
+      tags: ["systems"]
+      summary: "Delete system from collection"
+      parameters: 
+        - in: path
+          required: true
+          name: "id"
+          description: "ID of system in systems collection"
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Successfully deleted system"
+        404:
+          description: "System does not exist in user systems collecion"
+        401:
+          description: "Unauthorized access, this endpoint requires valid JWT"
+      
+          
+components:
+  schemas:
+    system:
+      type: object
+      description: "Represents single server entity in system"
+      properties:
+        id:
+          type: integer
+          description: "Indetifier in server repository"
+        type:
+          type: string
+          enum: ["Simulator", "Hardware"]
+        uuid:
+          type: string
+          description: "Unique indentifier for computer sysytem"
+        address:
+          type: string
+          description: "Http/Https addres where system is"
+        username:
+          type: string
+          description: "Username for administration account on system"
+        password:
+          type: string
+          description: "Password for administration account on system"
+    systemsCollection:
+      type: array
+      items:
+        $ref: '#/components/schemas/system'
+      
