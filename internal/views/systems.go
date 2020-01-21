@@ -2,7 +2,7 @@ package views
 
 import "net/http"
 
-import "github.com/deerling/resource-bridge/internal/models"
+import "github.com/deerling/resources.app/internal/models"
 
 type systemResponse struct {
 }

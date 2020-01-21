@@ -1,4 +1,4 @@
-module github.com/deerling/resource-bridge
+module github.com/deerling/resources.app
 
 go 1.13
 

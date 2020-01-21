@@ -4,7 +4,7 @@ import "net/http"
 
 import "fmt"
 
-import "github.com/deerling/resource-bridge/internal/session"
+import "github.com/deerling/resources.app/internal/session"
 
 import "encoding/json"
 

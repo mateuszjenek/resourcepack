@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
-	"github.com/deerling/resource-bridge/internal/durable"
+	"github.com/deerling/resources.app/internal/durable"
 )
 
 var whiteList = []string{
