@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/deerling/resource-bridge/internal/durable"
+	"github.com/deerling/resources.app/internal/durable"
 )
 
 func Register(store durable.Datastore, router *mux.Router) {

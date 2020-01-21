@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/deerling/resource-bridge/internal/durable"
-	"github.com/deerling/resource-bridge/internal/session"
-	"github.com/deerling/resource-bridge/internal/views"
+	"github.com/deerling/resources.app/internal/durable"
+	"github.com/deerling/resources.app/internal/session"
+	"github.com/deerling/resources.app/internal/views"
 )
 
 func registerAuthorizationEndpoints(store durable.UserStore, router *mux.Router) {

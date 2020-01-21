@@ -6,9 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
-	"github.com/deerling/resource-bridge/internal/controllers"
-	"github.com/deerling/resource-bridge/internal/durable"
-	"github.com/deerling/resource-bridge/internal/middlewares"
+	"github.com/deerling/resources.app/internal/controllers"
+	"github.com/deerling/resources.app/internal/durable"
+	"github.com/deerling/resources.app/internal/middlewares"
 )
 
 func main() {

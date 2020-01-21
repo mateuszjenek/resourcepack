@@ -3,7 +3,7 @@ package session
 import (
 	"context"
 
-	"github.com/deerling/resource-bridge/internal/models"
+	"github.com/deerling/resources.app/internal/models"
 )
 
 type contextValueKey int
