@@ -14,7 +14,7 @@ func (sessionError Error) Error() string {
 	return fmt.Sprintf("%s. Status Code: %d", sessionError.Description, sessionError.StatusCode)
 }
 
-func AuthorizationError() Error {
+func AuthenticationError() Error {
 	return Error{
 		Description: "Unauthorized access, chceck credentials",
 		StatusCode:  http.StatusUnauthorized,

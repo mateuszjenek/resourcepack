@@ -1,14 +1,16 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 	"github.com/deerling/resources.app/internal/controllers"
 	"github.com/deerling/resources.app/internal/durable"
 	"github.com/deerling/resources.app/internal/middlewares"
+	"github.com/deerling/resources.app/internal/models"
+	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -20,6 +22,19 @@ func main() {
 		return
 	}
 	defer datastore.Close()
+
+	err = datastore.AddUser(context.Background(), &models.User{"username", "email", "passhash", models.UserPrivilegesAdmin})
+	if err != nil {
+		logrus.Errorf("Error while creating user: %w", err)
+		return
+	}
+
+	user, err := datastore.GetUser(context.Background(), "username")
+	if err != nil {
+		logrus.Errorf("error while getting user: %w", err)
+		return
+	}
+	logrus.Info("%v", *user)
 
 	router := &mux.Router{}
 	router.Use(middlewares.Logger)

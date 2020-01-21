@@ -108,6 +108,7 @@ paths:
           description: "Successfully added system"
         401:
           description: "Unauthorized access, this endpoint requires valid JWT"
+
   /systems/{id}:
     get:
       tags: ["systems"]
@@ -200,4 +201,11 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/system'
+
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
       
