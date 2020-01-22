@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/deerling/resources.app/internal/config"
-	"github.com/deerling/resources.app/internal/durable"
-	"github.com/deerling/resources.app/internal/session"
-	"github.com/deerling/resources.app/internal/views"
+	"github.com/deerling/resourcepack/internal/config"
+	"github.com/deerling/resourcepack/internal/durable"
+	"github.com/deerling/resourcepack/internal/session"
+	"github.com/deerling/resourcepack/internal/views"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 )

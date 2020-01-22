@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Resource Bridge",
+            "name": "ResourcePack",
             "type": "go",
             "request": "launch",
             "mode": "auto",

@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/deerling/resources.app/internal/controllers"
-	"github.com/deerling/resources.app/internal/durable"
-	"github.com/deerling/resources.app/internal/middlewares"
-	"github.com/deerling/resources.app/internal/models"
+	"github.com/deerling/resourcepack/internal/controllers"
+	"github.com/deerling/resourcepack/internal/durable"
+	"github.com/deerling/resourcepack/internal/middlewares"
+	"github.com/deerling/resourcepack/internal/models"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )

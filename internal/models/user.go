@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/deerling/resources.app/internal/config"
+	"github.com/deerling/resourcepack/internal/config"
 	"github.com/dgrijalva/jwt-go"
 )
 

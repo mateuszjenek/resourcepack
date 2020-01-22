@@ -3,7 +3,7 @@ package views
 import (
 	"net/http"
 
-	"github.com/deerling/resources.app/internal/models"
+	"github.com/deerling/resourcepack/internal/models"
 )
 
 type systemResponse struct {

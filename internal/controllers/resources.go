@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/deerling/resources.app/internal/durable"
-	"github.com/deerling/resources.app/internal/views"
+	"github.com/deerling/resourcepack/internal/durable"
+	"github.com/deerling/resourcepack/internal/views"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )

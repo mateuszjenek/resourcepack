@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/deerling/resources.app/internal/models"
+	"github.com/deerling/resourcepack/internal/models"
 	"github.com/sirupsen/logrus"
 )
 

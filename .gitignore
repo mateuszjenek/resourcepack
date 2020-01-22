@@ -1,5 +1,5 @@
 # VSCode files
-cmd/mbridge/__debug_bin
+cmd/respack/__debug_bin
 
 # Generated on first use
-cmd/mbridge/development.db
+cmd/respack/development.db

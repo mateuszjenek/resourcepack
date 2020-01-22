@@ -1,4 +1,4 @@
-module github.com/deerling/resources.app
+module github.com/deerling/resourcepack
 
 go 1.13
 

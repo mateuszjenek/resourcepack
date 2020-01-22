@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  description: "This is a Resource Bridge API, used by Resource Bridge App."
+  description: "This is a resourcepack API, used by resourcepack App."
   version: "1.0.0"
-  title: "Resource Bridge"
+  title: "resourcepack"
   contact:
     email: "mateusz.jenek@gmail.com"
 
