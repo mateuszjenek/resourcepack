@@ -1,28 +1,41 @@
 package models
 
+import (
+	"fmt"
+	"time"
+
+	"github.com/deerling/resources.app/internal/config"
+	"github.com/dgrijalva/jwt-go"
+)
+
 // User represent logged user
 type User struct {
 	Username string
 	Email    string
 	PassHash string
-	Role     UserRole
+	Role     UserPrivileges
 }
 
-// UserRole define user's privileges
-type UserRole string
+// UserPrivileges define user's privileges
+type UserPrivileges int
 
 const (
-	// UserRoleRegular is a default user role
-	UserRoleRegular UserRole = "Regular"
-	// UserRoleAdmin is a role with high privileges
-	UserRoleAdmin UserRole = "Admin"
-	// UserRoleRoot is an administrator of whole system
-	UserRoleRoot UserRole = "Root"
+	UserPrivilegesStandard UserPrivileges = iota
+	UserPrivilegesManager
+	UserPrivilegesAdmin
 )
 
-// UsernameFilter returns filter to get only users with matching username
-func UsernameFilter(username string) UserCollectionFilter {
-	return func(user *User) bool {
-		return user.Username == username
+func (u *User) GenerateToken() (string, error) {
+	claims := &jwt.StandardClaims{
+		ExpiresAt: time.Now().Add(time.Hour).Unix(),
+		Issuer:    u.Username,
+		Subject:   "reservation.app",
 	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	ss, err := token.SignedString(config.SecretKey)
+	if err != nil {
+		return ss, fmt.Errorf("error while signing token: %w", err)
+	}
+	return ss, nil
 }

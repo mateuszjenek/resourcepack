@@ -4,11 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 
+	// SQLite3 database driver
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// Datastore aggregates all Store interfaces
 type Datastore interface {
-	SystemStore
+	ResourceStore
 	UserStore
 
 	Close()
@@ -18,6 +20,7 @@ type store struct {
 	db *sql.DB
 }
 
+// OpenDatastore initalize datastore object
 func OpenDatastore(dataSourceName string) (Datastore, error) {
 	db, err := sql.Open("sqlite3", dataSourceName)
 	if err != nil {
@@ -31,7 +34,13 @@ func OpenDatastore(dataSourceName string) (Datastore, error) {
 		return nil, fmt.Errorf("error while connecting to database: %w", err)
 	}
 
-	return &store{db}, nil
+	datastore := &store{db}
+	err = datastore.createUserStore()
+	if err != nil {
+		return nil, fmt.Errorf("error while creating user store: %w", err)
+	}
+
+	return datastore, nil
 }
 
 func (s *store) Close() {

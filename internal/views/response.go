@@ -1,12 +1,12 @@
 package views
 
-import "net/http"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
 
-import "fmt"
-
-import "github.com/deerling/resources.app/internal/session"
-
-import "encoding/json"
+	"github.com/deerling/resources.app/internal/session"
+)
 
 func RenderResponse(w http.ResponseWriter, statusCode int, data interface{}) {
 	response, err := json.Marshal(data)

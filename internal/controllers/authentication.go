@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/deerling/resources.app/internal/durable"
 	"github.com/deerling/resources.app/internal/session"
 	"github.com/deerling/resources.app/internal/views"
+	"github.com/gorilla/mux"
 )
 
-func registerAuthorizationEndpoints(store durable.UserStore, router *mux.Router) {
+func registerAuthenticationEndpoints(store durable.UserStore, router *mux.Router) {
 	endpoints := authEndpoints{store}
 
 	router.HandleFunc("/auth/token", endpoints.token).Methods(http.MethodPost)
@@ -38,10 +38,16 @@ func (endpoint *authEndpoints) token(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user.PassHash != body.Password {
-		views.RenderError(w, session.AuthorizationError())
+		views.RenderError(w, session.AuthenticationError())
 		return
 	}
 
-	views.RenderToken(w, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c")
+	token, err := user.GenerateToken()
+	if err != nil {
+		views.RenderError(w, session.ServerError(err))
+		return
+	}
+
+	views.RenderToken(w, token)
 
 }
