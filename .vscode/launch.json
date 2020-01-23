@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/mbridge/main.go",
+            "program": "${workspaceFolder}/cmd/respack/main.go",
             "env": {},
             "args": []
         }

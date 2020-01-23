@@ -14,9 +14,8 @@ func RenderResponse(w http.ResponseWriter, statusCode int, data interface{}) {
 		RenderError(w, err)
 		return
 	}
-
-	w.WriteHeader(statusCode)
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
 	w.Write(response)
 }
 
@@ -25,7 +24,7 @@ func RenderError(w http.ResponseWriter, err error) {
 	if !ok {
 		sessionError = session.ServerError(err)
 	}
-	w.WriteHeader(sessionError.StatusCode)
 	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(sessionError.StatusCode)
 	w.Write([]byte(fmt.Sprintf("%s", sessionError.Description)))
 }

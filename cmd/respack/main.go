@@ -8,7 +8,6 @@ import (
 	"github.com/deerling/resourcepack/internal/controllers"
 	"github.com/deerling/resourcepack/internal/durable"
 	"github.com/deerling/resourcepack/internal/middlewares"
-	"github.com/deerling/resourcepack/internal/models"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -23,11 +22,11 @@ func main() {
 	}
 	defer datastore.Close()
 
-	err = datastore.AddUser(context.Background(), &models.User{"username", "email", "passhash", models.UserPrivilegesAdmin})
-	if err != nil {
-		logrus.Errorf("Error while creating user: %w", err)
-		return
-	}
+	// err = datastore.AddUser(context.Background(), &models.User{"username", "email", "passhash", models.UserPrivilegesAdmin})
+	// if err != nil {
+	// 	logrus.Errorf("Error while creating user: %w", err)
+	// 	return
+	// }
 
 	user, err := datastore.GetUser(context.Background(), "username")
 	if err != nil {
@@ -36,6 +35,12 @@ func main() {
 	}
 	logrus.Info("%v", *user)
 
+	// err = datastore.AddResource(&models.Resource{2, "name", "description", user, nil})
+	// if err != nil {
+	// 	logrus.Errorf("Error while creating resource: %w", err)
+	// 	return
+	// }
+
 	router := &mux.Router{}
 	router.Use(middlewares.Logger)
 	router.Use(middlewares.Authenticate(datastore))
@@ -43,10 +48,9 @@ func main() {
 
 	srv := http.Server{
 		Handler:      router,
-		Addr:         ":2000",
+		Addr:         ":2002",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	srv.ListenAndServe()
-	logrus.Fatal("XD")
+	logrus.Fatal(srv.ListenAndServe())
 }

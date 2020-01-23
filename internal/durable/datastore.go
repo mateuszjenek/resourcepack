@@ -39,6 +39,10 @@ func OpenDatastore(dataSourceName string) (Datastore, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error while creating user store: %w", err)
 	}
+	err = datastore.createResourceStore()
+	if err != nil {
+		return nil, fmt.Errorf("error while creating resource store: %w", err)
+	}
 
 	return datastore, nil
 }

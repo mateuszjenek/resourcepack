@@ -11,7 +11,7 @@ import (
 const (
 	queryCreateTableUser      = "CREATE TABLE IF NOT EXISTS user (username varchar(50) PRIMARY KEY, passhash varchar(50) NOT NULL, privileges integer NOT NULL, email varchar(255) NOT NULL)"
 	queryInsertUser           = "INSERT INTO user (username, passhash, privileges, email) VALUES ($1, $2, $3, $4)"
-	querySelectUserByUsername = "SELECT username, passhash, privileges, email from user WHERE username = $1"
+	querySelectUserByUsername = "SELECT username, passhash, privileges, email FROM user WHERE username = $1"
 )
 
 func (s *store) createUserStore() error {
@@ -19,7 +19,7 @@ func (s *store) createUserStore() error {
 	if err != nil {
 		return fmt.Errorf("error while creating table in database: %w", err)
 	}
-	logrus.Debug("Successfully created user table")
+	logrus.Info("Successfully created user table")
 	return nil
 }
 

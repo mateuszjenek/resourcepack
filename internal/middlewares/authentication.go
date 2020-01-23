@@ -31,7 +31,7 @@ func Authenticate(store durable.Datastore) mux.MiddlewareFunc {
 
 			header := r.Header.Get("Authorization")
 			if !strings.HasPrefix(header, "Bearer ") {
-				logger.Info("Bearer token is not provided")
+				logger.Debug("Bearer token is not provided")
 				views.RenderError(w, session.AuthenticationError())
 				return
 			}
@@ -47,7 +47,7 @@ func Authenticate(store durable.Datastore) mux.MiddlewareFunc {
 			}
 
 			if !token.Valid {
-				logger.Error("Given token is invalid")
+				logger.Debug("Given token is invalid")
 				views.RenderError(w, session.AuthenticationError())
 				return
 			}
@@ -63,8 +63,8 @@ func Authenticate(store durable.Datastore) mux.MiddlewareFunc {
 
 			user, err := store.GetUser(r.Context(), claims["iss"].(string))
 			if err != nil {
-				logger.Error(err)
-				views.RenderError(w, err)
+				logger.Debug(err)
+				views.RenderError(w, session.AuthenticationError())
 				return
 			}
 

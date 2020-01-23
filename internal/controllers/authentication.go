@@ -33,7 +33,7 @@ func (endpoint *authEndpoints) token(w http.ResponseWriter, r *http.Request) {
 
 	user, err := endpoint.store.GetUser(r.Context(), body.Username)
 	if err != nil {
-		views.RenderError(w, err)
+		views.RenderError(w, session.AuthenticationError())
 		return
 	}
 

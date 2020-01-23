@@ -3,3 +3,6 @@ cmd/respack/__debug_bin
 
 # Generated on first use
 cmd/respack/development.db
+
+# MacOS files
+*.DS_Store
