@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/deerling/resourcepack/internal/session"
+	"github.com/jenusek/resourcepack/internal/session"
 )
 
 func RenderResponse(w http.ResponseWriter, statusCode int, data interface{}) {

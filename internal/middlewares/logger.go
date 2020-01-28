@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/deerling/resourcepack/internal/session"
+	"github.com/jenusek/resourcepack/internal/session"
 	"github.com/sirupsen/logrus"
 )
 

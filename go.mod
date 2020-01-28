@@ -1,4 +1,4 @@
-module github.com/deerling/resourcepack
+module github.com/jenusek/resourcepack
 
 go 1.13
 

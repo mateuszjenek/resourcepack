@@ -3,7 +3,7 @@ package views
 import (
 	"net/http"
 
-	"github.com/deerling/resourcepack/internal/models"
+	"github.com/jenusek/resourcepack/internal/models"
 )
 
 type resourceResponse struct {

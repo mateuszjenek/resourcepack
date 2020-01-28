@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/deerling/resourcepack/internal/durable"
+	"github.com/jenusek/resourcepack/internal/durable"
 	"github.com/gorilla/mux"
 )
 

@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/deerling/resourcepack/internal/controllers"
-	"github.com/deerling/resourcepack/internal/durable"
-	"github.com/deerling/resourcepack/internal/middlewares"
+	"github.com/jenusek/resourcepack/internal/controllers"
+	"github.com/jenusek/resourcepack/internal/durable"
+	"github.com/jenusek/resourcepack/internal/middlewares"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )

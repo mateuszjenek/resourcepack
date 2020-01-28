@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/deerling/resourcepack/internal/config"
+	"github.com/jenusek/resourcepack/internal/config"
 	"github.com/dgrijalva/jwt-go"
 )
 
