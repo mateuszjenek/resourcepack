@@ -31,7 +31,7 @@ func (u *User) GenerateToken() (string, error) {
 	claims := &jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour).Unix(),
 		Issuer:    u.Username,
-		Subject:   "reservation.app",
+		Subject:   "resourcepack",
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -42,18 +42,17 @@ func (u *User) GenerateToken() (string, error) {
 	return ss, nil
 }
 
-func (u *User) ResetCredentials() error {
+func (u *User) GeneratePassword() (string, error) {
 	pass, err := password.Generate(10, 2, 3, false, true)
 	if err != nil {
-		return fmt.Errorf("error while generating password for user: %w", err)
+		return pass, fmt.Errorf("error while generating password for user: %w", err)
 	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.MinCost)
 	if err != nil {
-		return fmt.Errorf("error while generating hash from password: %w", err)
+		return pass, fmt.Errorf("error while generating hash from password: %w", err)
 	}
 	u.PassHash = string(hash)
-	// TODO: Invoke email service to send generated password
 
-	return nil
+	return pass, nil
 }

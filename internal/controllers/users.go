@@ -32,12 +32,19 @@ func (endpoint *usersEndpoints) post(w http.ResponseWriter, r *http.Request) {
 		Username string `json:"username"`
 		Email    string `json:"email"`
 	}
+
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		views.RenderError(w, err)
 		return
 	}
 
-	createdUser, err := models.CreateUser(body.Username, body.Email, models.UserPrivilegesStandard)
+	createdUser := &models.User{
+		Username:   body.Username,
+		Email:      body.Email,
+		Privileges: models.UserPrivilegesStandard,
+	}
+
+	_, err := createdUser.GeneratePassword()
 	if err != nil {
 		views.RenderError(w, err)
 		return
@@ -48,4 +55,6 @@ func (endpoint *usersEndpoints) post(w http.ResponseWriter, r *http.Request) {
 		views.RenderError(w, err)
 		return
 	}
+
+	// TODO: Notify via email
 }
