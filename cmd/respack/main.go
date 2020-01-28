@@ -5,10 +5,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/jenusek/resourcepack/internal/controllers"
 	"github.com/jenusek/resourcepack/internal/durable"
 	"github.com/jenusek/resourcepack/internal/middlewares"
-	"github.com/gorilla/mux"
+	"github.com/jenusek/resourcepack/internal/models"
 	"github.com/sirupsen/logrus"
 )
 
@@ -22,11 +23,11 @@ func main() {
 	}
 	defer datastore.Close()
 
-	// err = datastore.AddUser(context.Background(), &models.User{"username", "email", "passhash", models.UserPrivilegesAdmin})
-	// if err != nil {
-	// 	logrus.Errorf("Error while creating user: %w", err)
-	// 	return
-	// }
+	err = datastore.AddUser(context.Background(), &models.User{"username", "email", "passhash", models.UserPrivilegesAdmin})
+	if err != nil {
+		logrus.Errorf("Error while creating user: %w", err)
+		return
+	}
 
 	user, err := datastore.GetUser(context.Background(), "username")
 	if err != nil {
@@ -35,11 +36,11 @@ func main() {
 	}
 	logrus.Info("%v", *user)
 
-	// err = datastore.AddResource(&models.Resource{2, "name", "description", user, nil})
-	// if err != nil {
-	// 	logrus.Errorf("Error while creating resource: %w", err)
-	// 	return
-	// }
+	err = datastore.AddResource(&models.Resource{2, "name", "description", user, nil})
+	if err != nil {
+		logrus.Errorf("Error while creating resource: %w", err)
+		return
+	}
 
 	router := &mux.Router{}
 	router.Use(middlewares.Logger)

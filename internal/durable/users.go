@@ -33,7 +33,7 @@ type UserStore interface {
 func (s *store) GetUser(ctx context.Context, username string) (*models.User, error) {
 	row := s.db.QueryRow(querySelectUserByUsername, username)
 	user := &models.User{}
-	err := row.Scan(&user.Username, &user.PassHash, &user.Role, &user.Email)
+	err := row.Scan(&user.Username, &user.PassHash, &user.Privileges, &user.Email)
 	if err != nil {
 		return nil, fmt.Errorf("error while scanning row: %w", err)
 	}
@@ -42,7 +42,7 @@ func (s *store) GetUser(ctx context.Context, username string) (*models.User, err
 
 // AddUser adds given user to store
 func (s *store) AddUser(ctx context.Context, user *models.User) error {
-	result, err := s.db.Exec(queryInsertUser, user.Username, user.PassHash, user.Role, user.Email)
+	result, err := s.db.Exec(queryInsertUser, user.Username, user.PassHash, user.Privileges, user.Email)
 	if err != nil {
 		return fmt.Errorf("error while inserting user to user table: %w", err)
 	}
