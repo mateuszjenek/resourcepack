@@ -23,7 +23,7 @@ type ResourceStore interface {
 func (s *store) createResourceStore() error {
 	_, err := s.db.Exec(queryCreateTableResource)
 	if err != nil {
-		return fmt.Errorf("error while creating table in database: %w", err)
+		return fmt.Errorf("error while creating table in database: %v", err)
 	}
 	logrus.Info("Successfully created resources table")
 	return nil
@@ -33,7 +33,7 @@ func (s *store) createResourceStore() error {
 func (s *store) GetResources(ctx context.Context) ([]*models.Resource, error) {
 	rows, err := s.db.Query(queryGetAllResources)
 	if err != nil {
-		return nil, fmt.Errorf("error while getting resources from store: %w", err)
+		return nil, fmt.Errorf("error while getting resources from store: %v", err)
 	}
 	defer rows.Close()
 	resources := make([]*models.Resource, 0)
@@ -42,11 +42,11 @@ func (s *store) GetResources(ctx context.Context) ([]*models.Resource, error) {
 		user := &models.User{}
 		err = rows.Scan(&resource.ID, &resource.Name, &resource.Description, &user.Username)
 		if err != nil {
-			return nil, fmt.Errorf("error while scanning row: %w", err)
+			return nil, fmt.Errorf("error while scanning row: %v", err)
 		}
 		user, err = s.GetUser(ctx, user.Username)
 		if err != nil {
-			return nil, fmt.Errorf("error while getting user from store: %w", err)
+			return nil, fmt.Errorf("error while getting user from store: %v", err)
 		}
 		resource.CreatedBy = user
 		resources = append(resources, resource)
@@ -57,11 +57,11 @@ func (s *store) GetResources(ctx context.Context) ([]*models.Resource, error) {
 func (s *store) AddResource(resource *models.Resource) error {
 	result, err := s.db.Exec(queryResourceInsert, resource.ID, resource.Name, resource.Description, resource.CreatedBy.Username)
 	if err != nil {
-		return fmt.Errorf("error while inserting resource to resource table: %w", err)
+		return fmt.Errorf("error while inserting resource to resource table: %v", err)
 	}
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return fmt.Errorf("error while getting number of affected rows: %w", err)
+		return fmt.Errorf("error while getting number of affected rows: %v", err)
 	}
 	logrus.WithField("rowsAffected", rowsAffected).Info("Succesfully added resource")
 	return nil

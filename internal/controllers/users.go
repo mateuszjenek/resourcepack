@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jenusek/resourcepack/internal/durable"
 	"github.com/jenusek/resourcepack/internal/models"
+	"github.com/jenusek/resourcepack/internal/services"
 	"github.com/jenusek/resourcepack/internal/session"
 	"github.com/jenusek/resourcepack/internal/views"
 )
@@ -38,16 +39,23 @@ func (endpoint *usersEndpoints) post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	password, err := services.GeneratePassword()
+	if err != nil {
+		views.RenderError(w, err)
+		return
+	}
+
+	passHash, err := services.EncryptPassword(password)
+	if err != nil {
+		views.RenderError(w, err)
+		return
+	}
+
 	createdUser := &models.User{
 		Username:   body.Username,
 		Email:      body.Email,
 		Privileges: models.UserPrivilegesStandard,
-	}
-
-	_, err := createdUser.GeneratePassword()
-	if err != nil {
-		views.RenderError(w, err)
-		return
+		PassHash:   string(passHash),
 	}
 
 	err = endpoint.store.AddUser(r.Context(), createdUser)
@@ -56,5 +64,9 @@ func (endpoint *usersEndpoints) post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Notify via email
+	err = services.SendRegisterMail(user, createdUser, password)
+	if err != nil {
+		views.RenderError(w, err)
+		return
+	}
 }

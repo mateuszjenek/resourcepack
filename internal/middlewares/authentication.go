@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/mux"
 	"github.com/jenusek/resourcepack/internal/config"
 	"github.com/jenusek/resourcepack/internal/durable"
 	"github.com/jenusek/resourcepack/internal/session"
 	"github.com/jenusek/resourcepack/internal/views"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gorilla/mux"
 )
 
 var whiteList = []string{
@@ -94,7 +94,7 @@ func parseToken(tokenString string) (*jwt.Token, error) {
 		return config.SecretKey, nil
 	})
 	if err != nil {
-		return nil, fmt.Errorf("error while parsing token: %w", err)
+		return nil, fmt.Errorf("error while parsing token: %v", err)
 	}
 	return token, nil
 }

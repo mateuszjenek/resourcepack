@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/jenusek/resourcepack/internal/durable"
 	"github.com/jenusek/resourcepack/internal/session"
 	"github.com/jenusek/resourcepack/internal/views"
-	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func registerAuthenticationEndpoints(store durable.UserStore, router *mux.Router) {
@@ -37,7 +38,7 @@ func (endpoint *authEndpoints) token(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user.PassHash != body.Password {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PassHash), []byte(body.Password)); err != nil {
 		views.RenderError(w, session.AuthenticationError())
 		return
 	}

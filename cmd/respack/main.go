@@ -6,10 +6,12 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/jenusek/resourcepack/internal/config"
 	"github.com/jenusek/resourcepack/internal/controllers"
 	"github.com/jenusek/resourcepack/internal/durable"
 	"github.com/jenusek/resourcepack/internal/middlewares"
 	"github.com/jenusek/resourcepack/internal/models"
+	"github.com/jenusek/resourcepack/internal/services"
 	"github.com/sirupsen/logrus"
 )
 
@@ -18,29 +20,31 @@ func main() {
 
 	datastore, err := durable.OpenDatastore("./development.db")
 	if err != nil {
-		logrus.Errorf("Error while opening datastore: %w", err)
+		logrus.Errorf("Error while opening datastore: %v", err)
 		return
 	}
 	defer datastore.Close()
 
-	err = datastore.AddUser(context.Background(), &models.User{"username", "email", "passhash", models.UserPrivilegesAdmin})
+	hash, err := services.EncryptPassword(config.FirstUser.Password)
 	if err != nil {
-		logrus.Errorf("Error while creating user: %w", err)
+		logrus.Errorf("Error while hashing first user password: %v", err)
 		return
 	}
 
-	user, err := datastore.GetUser(context.Background(), "username")
-	if err != nil {
-		logrus.Errorf("error while getting user: %w", err)
-		return
-	}
-	logrus.Info("%v", *user)
+	datastore.AddUser(context.Background(), &models.User{config.FirstUser.Usernane, "root@respack.com", string(hash), models.UserPrivilegesAdmin})
 
-	err = datastore.AddResource(&models.Resource{2, "name", "description", user, nil})
-	if err != nil {
-		logrus.Errorf("Error while creating resource: %w", err)
-		return
-	}
+	// user, err := datastore.GetUser(context.Background(), "username")
+	// if err != nil {
+	// 	logrus.Errorf("error while getting user: %v", err)
+	// 	return
+	// }
+	// logrus.Info("%v", *user)
+
+	// err = datastore.AddResource(&models.Resource{2, "name", "description", user, nil})
+	// if err != nil {
+	// 	logrus.Errorf("Error while creating resource: %v", err)
+	// 	return
+	// }
 
 	router := &mux.Router{}
 	router.Use(middlewares.Logger)

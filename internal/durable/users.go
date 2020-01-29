@@ -17,7 +17,7 @@ const (
 func (s *store) createUserStore() error {
 	_, err := s.db.Exec(queryCreateTableUser)
 	if err != nil {
-		return fmt.Errorf("error while creating table in database: %w", err)
+		return fmt.Errorf("error while creating table in database: %v", err)
 	}
 	logrus.Info("Successfully created user table")
 	return nil
@@ -35,7 +35,7 @@ func (s *store) GetUser(ctx context.Context, username string) (*models.User, err
 	user := &models.User{}
 	err := row.Scan(&user.Username, &user.PassHash, &user.Privileges, &user.Email)
 	if err != nil {
-		return nil, fmt.Errorf("error while scanning row: %w", err)
+		return nil, fmt.Errorf("error while scanning row: %v", err)
 	}
 	return user, nil
 }
@@ -44,11 +44,11 @@ func (s *store) GetUser(ctx context.Context, username string) (*models.User, err
 func (s *store) AddUser(ctx context.Context, user *models.User) error {
 	result, err := s.db.Exec(queryInsertUser, user.Username, user.PassHash, user.Privileges, user.Email)
 	if err != nil {
-		return fmt.Errorf("error while inserting user to user table: %w", err)
+		return fmt.Errorf("error while inserting user to user table: %v", err)
 	}
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return fmt.Errorf("error while getting number of affected rows: %w", err)
+		return fmt.Errorf("error while getting number of affected rows: %v", err)
 	}
 	logrus.WithField("rowsAffected", rowsAffected).Info("Succesfully added user")
 	return nil
