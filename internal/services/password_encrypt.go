@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// EncryptPassword hash and salt given password
 func EncryptPassword(password string) ([]byte, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -15,6 +16,7 @@ func EncryptPassword(password string) ([]byte, error) {
 	return hash, nil
 }
 
+// GeneratePassword generate random password string
 func GeneratePassword() (string, error) {
 	pass, err := password.Generate(10, 2, 0, false, true)
 	if err != nil {

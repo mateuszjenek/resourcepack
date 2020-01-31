@@ -8,18 +8,18 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
-	"github.com/jenusek/resourcepack/internal/config"
 	"github.com/jenusek/resourcepack/internal/durable"
+	"github.com/jenusek/resourcepack/internal/models"
 	"github.com/jenusek/resourcepack/internal/session"
 	"github.com/jenusek/resourcepack/internal/views"
 )
 
 var whiteList = []string{
-	"/auth/token",
+	"/respack/v1/auth/token",
 }
 
 // Authenticate is a function
-func Authenticate(store durable.Datastore) mux.MiddlewareFunc {
+func Authenticate(store durable.Datastore, config *models.Configuration) mux.MiddlewareFunc {
 	return func(handler http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if isOnWhiteList(r.RequestURI) {
@@ -39,7 +39,7 @@ func Authenticate(store durable.Datastore) mux.MiddlewareFunc {
 			tokenString := header[7:]
 			logger = logger.WithField("token", tokenString)
 
-			token, err := parseToken(tokenString)
+			token, err := parseToken(tokenString, config.SecretKey)
 			if err != nil {
 				logger.Error(err)
 				views.RenderError(w, err)
@@ -86,12 +86,12 @@ func isOnWhiteList(uri string) bool {
 	return false
 }
 
-func parseToken(tokenString string) (*jwt.Token, error) {
+func parseToken(tokenString string, secretKey string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return config.SecretKey, nil
+		return secretKey, nil
 	})
 	if err != nil {
 		return nil, fmt.Errorf("error while parsing token: %v", err)

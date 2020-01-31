@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/jenusek/resourcepack/internal/config"
 )
 
 // User represent logged user
@@ -25,7 +24,7 @@ const (
 	UserPrivilegesAdmin
 )
 
-func (u *User) GenerateToken() (string, error) {
+func (u *User) GenerateToken(secretKey string) (string, error) {
 	claims := &jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour).Unix(),
 		Issuer:    u.Username,
@@ -33,7 +32,7 @@ func (u *User) GenerateToken() (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	ss, err := token.SignedString(config.SecretKey)
+	ss, err := token.SignedString([]byte(secretKey))
 	if err != nil {
 		return ss, fmt.Errorf("error while signing token: %v", err)
 	}

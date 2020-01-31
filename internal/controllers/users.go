@@ -12,14 +12,15 @@ import (
 	"github.com/jenusek/resourcepack/internal/views"
 )
 
-func registerUserEndpoints(store durable.UserStore, router *mux.Router) {
-	endpoints := &usersEndpoints{store}
+func registerUserEndpoints(store durable.UserStore, config *models.Configuration, router *mux.Router) {
+	endpoints := &usersEndpoints{store, config}
 
 	router.HandleFunc("/users", endpoints.post).Methods(http.MethodPost)
 }
 
 type usersEndpoints struct {
-	store durable.UserStore
+	store  durable.UserStore
+	config *models.Configuration
 }
 
 func (endpoint *usersEndpoints) post(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +65,7 @@ func (endpoint *usersEndpoints) post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = services.SendRegisterMail(user, createdUser, password)
+	err = services.SendRegisterMail(endpoint.config, user, createdUser, password)
 	if err != nil {
 		views.RenderError(w, err)
 		return

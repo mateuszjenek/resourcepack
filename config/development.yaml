@@ -1,0 +1,12 @@
+secretKey: secretKey
+server:
+  ip: 127.0.0.1
+  port: 2000
+emailServer:
+  smtp: smtp.gmail.com
+  username: resourcepack.notifier@gmail.com
+  password: resourcepack1
+rootuser:
+  email: mateusz.jenek@gmail.com
+  username: admin
+  password: root

@@ -10,4 +10,5 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.4.0 // indirect
 	golang.org/x/crypto v0.0.0-20200117160349-530e935923ad
+	gopkg.in/yaml.v2 v2.2.8
 )

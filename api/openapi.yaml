@@ -1,22 +1,20 @@
 openapi: 3.0.0
 info:
-  description: "This is a resourcepack API, used by resourcepack App."
+  description: "This is a ResourcePack API, used by ResourcePack App."
   version: "1.0.0"
-  title: "resourcepack"
+  title: "ResourcePack"
   contact:
     email: "mateusz.jenek@gmail.com"
 
 servers:
-  - url: "https://localhost:2000/mbridge/v1"
-    description: "Test / Demonstration server"
-  - url: "https://89.132.231.69:2000/mbridge/v1"
-    description: "Main server for DCG Poland organization"
+  - url: "https://localhost:2000/respack/v1"
+    description: "Test / Development server"
     
 tags:
 - name: "users"
   description: "Access to registered users information"
-- name: "systems"
-  description: "Access to systems collection"
+- name: "resources"
+  description: "Access to resources collection"
 - name: "reservations"
   description: "Access to reservations collection"
 - name: "projects"

@@ -6,19 +6,21 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jenusek/resourcepack/internal/durable"
+	"github.com/jenusek/resourcepack/internal/models"
 	"github.com/jenusek/resourcepack/internal/session"
 	"github.com/jenusek/resourcepack/internal/views"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func registerAuthenticationEndpoints(store durable.UserStore, router *mux.Router) {
-	endpoints := authEndpoints{store}
+func registerAuthenticationEndpoints(store durable.UserStore, config *models.Configuration, router *mux.Router) {
+	endpoints := authEndpoints{store, config}
 
 	router.HandleFunc("/auth/token", endpoints.token).Methods(http.MethodPost)
 }
 
 type authEndpoints struct {
-	store durable.UserStore
+	store  durable.UserStore
+	config *models.Configuration
 }
 
 func (endpoint *authEndpoints) token(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +45,7 @@ func (endpoint *authEndpoints) token(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := user.GenerateToken()
+	token, err := user.GenerateToken(endpoint.config.SecretKey)
 	if err != nil {
 		views.RenderError(w, session.ServerError(err))
 		return
