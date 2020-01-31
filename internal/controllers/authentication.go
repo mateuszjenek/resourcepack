@@ -52,5 +52,4 @@ func (endpoint *authEndpoints) token(w http.ResponseWriter, r *http.Request) {
 	}
 
 	views.RenderToken(w, token)
-
 }
