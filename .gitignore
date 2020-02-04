@@ -6,3 +6,6 @@ cmd/respack/development.db
 
 # MacOS files
 *.DS_Store
+
+# Secret files
+config/development.yaml
