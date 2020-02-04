@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/jenusek/resourcepack/internal/session"
+	"github.com/sirupsen/logrus"
 )
 
 func RenderResponse(w http.ResponseWriter, statusCode int, data interface{}) {
@@ -20,6 +21,7 @@ func RenderResponse(w http.ResponseWriter, statusCode int, data interface{}) {
 }
 
 func RenderError(w http.ResponseWriter, err error) {
+	logrus.Error(err)
 	sessionError, ok := err.(session.Error)
 	if !ok {
 		sessionError = session.ServerError(err)

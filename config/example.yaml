@@ -4,8 +4,8 @@ server:
   port: 2000
 emailServer:
   smtp: smtp.gmail.com
-  username: resourcepack.notifier@gmail.com
-  password: resourcepack1
+  username: gmail_username
+  password: gmail_password
 rootuser:
   email: mateusz.jenek@gmail.com
   username: admin
